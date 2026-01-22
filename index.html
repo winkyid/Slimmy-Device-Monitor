@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SDM - Slimmy Devices Monitoring</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  /* Reset & font */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: 'Roboto Mono', monospace; background:#121212; color:#fff; }
+
+  header {
+    background: linear-gradient(90deg, #4a90e2, #50e3c2);
+    padding: 1.2rem 2rem;
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color:white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  }
+
+  main { padding:2rem; display:grid; gap:2rem; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); }
+
+  .device {
+    background:#1e1e1e;
+    border-radius:12px;
+    padding:1.5rem;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.5);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .device:hover { transform: translateY(-5px); box-shadow: 0 12px 20px rgba(0,0,0,0.6); }
+
+  .device h2 { margin-bottom:0.5rem; font-size:1.2rem; color:#50e3c2; }
+  .device p { font-size:0.85rem; margin-bottom:1rem; color:#ccc; }
+
+  canvas { background:#2a2a2a; border-radius:8px; padding:5px; }
+
+  footer { text-align:center; padding:1rem; color:#666; font-size:0.85rem; margin-top:2rem; }
+</style>
+</head>
+<body>
+
+<header>SDM - Slimmy Devices Monitoring</header>
+
+<main id="devices-container">
+  <!-- Device cards akan muncul di sini -->
+</main>
+
+<footer>&copy; 2026 Slimmy Inc.</footer>
+
+<script>
+  const devices = [
+    { id: 'STB01', name:'STB Living Room', cpu: 30, memory:45, hashrate:1200 },
+    { id: 'STB02', name:'STB Bedroom', cpu: 25, memory:60, hashrate:950 },
+    // Tambah device baru di sini
+  ];
+
+  const container = document.getElementById('devices-container');
+
+  devices.forEach(device => {
+    const card = document.createElement('div');
+    card.className = 'device';
+    card.innerHTML = `
+      <h2>${device.name}</h2>
+      <p><strong>ID:</strong> ${device.id}</p>
+      <canvas id="chart-${device.id}" height="140"></canvas>
+    `;
+    container.appendChild(card);
+
+    const ctx = document.getElementById(`chart-${device.id}`).getContext('2d');
+    new Chart(ctx, {
+      type:'bar',
+      data:{
+        labels:['CPU %','Memory %','Hashrate H/s'],
+        datasets:[{
+          label: device.name,
+          data:[device.cpu, device.memory, device.hashrate],
+          backgroundColor:['#4a90e2','#50e3c2','#f5a623'],
+          borderRadius:6
+        }]
+      },
+      options:{
+        responsive:true,
+        plugins:{ legend:{ display:false } },
+        scales:{ y:{ beginAtZero:true, grid:{ color:'rgba(255,255,255,0.1)' } },
+                 x:{ grid:{ color:'rgba(255,255,255,0.1)' } } }
+      }
+    });
+  });
+
+  /* 
+    Tambah device baru:
+    1. Tambahkan object di array `devices`
+    2. Set id, name, cpu, memory, hashrate
+    3. Otomatis muncul di halaman
+  */
+</script>
+</body>
+</html>
