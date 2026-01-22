@@ -12,50 +12,45 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-  /* Base & font */
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family: 'Inter', sans-serif; background:#0f111a; color:#fff; }
+  body { font-family: 'Inter', sans-serif; background:#f5f5f7; color:#111; }
 
   header {
-    background: linear-gradient(90deg, #4f46e5, #10b981);
-    padding:1.5rem 2rem;
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(10px);
+    padding:1rem 2rem;
+    border-radius:12px;
+    margin:1rem;
     text-align:center;
-    font-size:1.9rem;
+    font-size:1.7rem;
     font-weight:700;
-    letter-spacing:1px;
-    color:white;
-    box-shadow:0 4px 12px rgba(0,0,0,0.4);
-    border-bottom-left-radius:16px;
-    border-bottom-right-radius:16px;
+    color:#111;
+    box-shadow:0 4px 8px rgba(0,0,0,0.05);
   }
 
-  main { padding:2rem; display:grid; gap:2rem; grid-template-columns: repeat(auto-fit,minmax(300px,1fr)); }
+  main { padding:2rem; display:grid; gap:2rem; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); }
 
   .device {
-    background: rgba(20,20,30,0.6);
+    background: rgba(255,255,255,0.85);
     backdrop-filter: blur(8px);
     border-radius:16px;
     padding:1.5rem;
-    box-shadow:0 8px 20px rgba(0,0,0,0.5);
+    box-shadow:0 8px 24px rgba(0,0,0,0.08);
     transition: transform 0.3s, box-shadow 0.3s;
   }
-  .device:hover { transform: translateY(-6px); box-shadow:0 12px 28px rgba(0,0,0,0.6); }
+  .device:hover { transform: translateY(-4px); box-shadow:0 12px 28px rgba(0,0,0,0.12); }
 
-  .device h2 { margin-bottom:0.7rem; font-size:1.3rem; font-weight:600; color:#10b981; }
-  .device p { font-size:0.85rem; margin-bottom:1rem; color:#cbd5e1; display:flex; align-items:center; gap:0.5rem; }
+  .device h2 { margin-bottom:0.5rem; font-size:1.2rem; font-weight:600; color:#4f46e5; }
+  .device p { font-size:0.85rem; margin-bottom:1rem; display:flex; align-items:center; gap:0.5rem; color:#555; }
 
-  .stats {
-    display:flex;
-    justify-content:space-between;
-    margin-bottom:1rem;
-  }
+  .stats { display:flex; justify-content:space-between; margin-bottom:1rem; }
   .stat { flex:1; text-align:center; padding:0.5rem; }
-  .stat i { font-size:1.5rem; margin-bottom:0.3rem; color:#4f46e5; }
-  .stat span { display:block; font-weight:600; font-size:1rem; color:#fff; }
+  .stat i { font-size:1.4rem; margin-bottom:0.3rem; color:#10b981; }
+  .stat span { display:block; font-weight:600; font-size:0.95rem; color:#111; }
 
-  canvas { background:#1f1f2a; border-radius:12px; padding:5px; }
+  canvas { background:#f0f0f3; border-radius:12px; padding:5px; }
 
-  footer { text-align:center; padding:1rem; color:#666; font-size:0.85rem; margin-top:2rem; }
+  footer { text-align:center; padding:1rem; color:#999; font-size:0.85rem; margin-top:2rem; }
 </style>
 </head>
 <body>
@@ -108,19 +103,12 @@
         responsive:true,
         plugins:{ legend:{ display:false } },
         scales:{
-          y:{ beginAtZero:true, grid:{ color:'rgba(255,255,255,0.1)' } },
-          x:{ grid:{ color:'rgba(255,255,255,0.1)' } }
+          y:{ beginAtZero:true, grid:{ color:'rgba(0,0,0,0.05)' } },
+          x:{ grid:{ color:'rgba(0,0,0,0.05)' } }
         }
       }
     });
   });
-
-  /*
-    Tambah device baru:
-    1. Tambahkan object di array `devices`
-    2. Set id, name, cpu, memory, hashrate
-    3. Otomatis muncul di halaman
-  */
 </script>
 </body>
 </html>
