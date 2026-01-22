@@ -4,39 +4,56 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SDM - Slimmy Devices Monitoring</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- Font modern -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- FontAwesome Icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
-  /* Reset & font */
+  /* Base & font */
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family: 'Roboto Mono', monospace; background:#121212; color:#fff; }
+  body { font-family: 'Inter', sans-serif; background:#0f111a; color:#fff; }
 
   header {
-    background: linear-gradient(90deg, #4a90e2, #50e3c2);
-    padding: 1.2rem 2rem;
-    text-align: center;
-    font-size: 1.8rem;
-    font-weight: 700;
-    letter-spacing: 1px;
+    background: linear-gradient(90deg, #4f46e5, #10b981);
+    padding:1.5rem 2rem;
+    text-align:center;
+    font-size:1.9rem;
+    font-weight:700;
+    letter-spacing:1px;
     color:white;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    box-shadow:0 4px 12px rgba(0,0,0,0.4);
+    border-bottom-left-radius:16px;
+    border-bottom-right-radius:16px;
   }
 
-  main { padding:2rem; display:grid; gap:2rem; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); }
+  main { padding:2rem; display:grid; gap:2rem; grid-template-columns: repeat(auto-fit,minmax(300px,1fr)); }
 
   .device {
-    background:#1e1e1e;
-    border-radius:12px;
+    background: rgba(20,20,30,0.6);
+    backdrop-filter: blur(8px);
+    border-radius:16px;
     padding:1.5rem;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.5);
+    box-shadow:0 8px 20px rgba(0,0,0,0.5);
     transition: transform 0.3s, box-shadow 0.3s;
   }
-  .device:hover { transform: translateY(-5px); box-shadow: 0 12px 20px rgba(0,0,0,0.6); }
+  .device:hover { transform: translateY(-6px); box-shadow:0 12px 28px rgba(0,0,0,0.6); }
 
-  .device h2 { margin-bottom:0.5rem; font-size:1.2rem; color:#50e3c2; }
-  .device p { font-size:0.85rem; margin-bottom:1rem; color:#ccc; }
+  .device h2 { margin-bottom:0.7rem; font-size:1.3rem; font-weight:600; color:#10b981; }
+  .device p { font-size:0.85rem; margin-bottom:1rem; color:#cbd5e1; display:flex; align-items:center; gap:0.5rem; }
 
-  canvas { background:#2a2a2a; border-radius:8px; padding:5px; }
+  .stats {
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:1rem;
+  }
+  .stat { flex:1; text-align:center; padding:0.5rem; }
+  .stat i { font-size:1.5rem; margin-bottom:0.3rem; color:#4f46e5; }
+  .stat span { display:block; font-weight:600; font-size:1rem; color:#fff; }
+
+  canvas { background:#1f1f2a; border-radius:12px; padding:5px; }
 
   footer { text-align:center; padding:1rem; color:#666; font-size:0.85rem; margin-top:2rem; }
 </style>
@@ -53,8 +70,8 @@
 
 <script>
   const devices = [
-    { id: 'STB01', name:'STB Living Room', cpu: 30, memory:45, hashrate:1200 },
-    { id: 'STB02', name:'STB Bedroom', cpu: 25, memory:60, hashrate:950 },
+    { id:'STB01', name:'STB Living Room', cpu:30, memory:45, hashrate:1200 },
+    { id:'STB02', name:'STB Bedroom', cpu:25, memory:60, hashrate:950 },
     // Tambah device baru di sini
   ];
 
@@ -62,36 +79,43 @@
 
   devices.forEach(device => {
     const card = document.createElement('div');
-    card.className = 'device';
-    card.innerHTML = `
+    card.className='device';
+    card.innerHTML=`
       <h2>${device.name}</h2>
-      <p><strong>ID:</strong> ${device.id}</p>
-      <canvas id="chart-${device.id}" height="140"></canvas>
+      <p><i class="fas fa-id-badge"></i>ID: ${device.id}</p>
+      <div class="stats">
+        <div class="stat"><i class="fas fa-microchip"></i><span>${device.cpu}% CPU</span></div>
+        <div class="stat"><i class="fas fa-memory"></i><span>${device.memory}% RAM</span></div>
+        <div class="stat"><i class="fas fa-bolt"></i><span>${device.hashrate} H/s</span></div>
+      </div>
+      <canvas id="chart-${device.id}" height="120"></canvas>
     `;
     container.appendChild(card);
 
     const ctx = document.getElementById(`chart-${device.id}`).getContext('2d');
-    new Chart(ctx, {
+    new Chart(ctx,{
       type:'bar',
       data:{
-        labels:['CPU %','Memory %','Hashrate H/s'],
+        labels:['CPU','Memory','Hashrate'],
         datasets:[{
           label: device.name,
           data:[device.cpu, device.memory, device.hashrate],
-          backgroundColor:['#4a90e2','#50e3c2','#f5a623'],
+          backgroundColor:['#4f46e5','#10b981','#f59e0b'],
           borderRadius:6
         }]
       },
       options:{
         responsive:true,
         plugins:{ legend:{ display:false } },
-        scales:{ y:{ beginAtZero:true, grid:{ color:'rgba(255,255,255,0.1)' } },
-                 x:{ grid:{ color:'rgba(255,255,255,0.1)' } } }
+        scales:{
+          y:{ beginAtZero:true, grid:{ color:'rgba(255,255,255,0.1)' } },
+          x:{ grid:{ color:'rgba(255,255,255,0.1)' } }
+        }
       }
     });
   });
 
-  /* 
+  /*
     Tambah device baru:
     1. Tambahkan object di array `devices`
     2. Set id, name, cpu, memory, hashrate
